@@ -62,7 +62,6 @@ function rotateBitsLeft(number, amount, padding = 64) {
   const p = BigInt(padding);
   //create a mask to get the bits that will shift out of focus
   let mask = ~0n << (p - a);
-  console.log(printAllBits(mask, 64));
   //create a second mask to clear any bits outside of the padding
   let mask2 = ~(~0n << p);
   //get the bits that will fall off the edge
@@ -79,11 +78,16 @@ function rotateBitsRight(number, amount, padding = 64) {
   const n = BigInt(number);
   const a = BigInt(amount);
   const p = BigInt(padding);
-  let mask = ~0n >> a;
-  console.log(printAllBits(mask, 64));
-  let mask2 = ~(~0n << p);
-  let overflow = (n & mask) >> (p - a);
-  let r = ((n << a) | overflow) & mask2;
+  //create a mask to get the bits that will shift out of focus
+  let mask = ~(~0n << a);
+  //get the overflow bits by masking the bits that will be shifted out of focus
+  let overflow = n & mask;
+  //shift the overflow bits over to where they will end up
+  overflow = overflow << (p - a);
+  //create a second mask to clear any bits when we shift to the right
+  let mask2 = ~(~0n << (p - a));
+  //shift the orignal bits over, mask it to make sure we had no trailing bits, then or the overflow to add it back in
+  let r = ((n >> a) & mask2) | overflow;
   return r;
 }
 

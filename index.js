@@ -18,12 +18,6 @@ function main() {
   //   let base = BigInt(
   //     "0b0001001100110100010101110111100110011011101111001101111111110001"
   //   );
-
-  let test = BigInt(0b000101n);
-  let n = rotateBitsRight(test, 1, 6);
-  console.log(printAllBits(test, 6));
-  console.log(printAllBits(n, 6));
-
   //   let p = permutation(PC1, base);
   //   console.log("k+", printAllBits(p, 56));
   //   //r0 is technically opposite, according to tutorial

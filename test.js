@@ -1,11 +1,21 @@
-const { testC0D0 } = require("./src/tests/c0-d0");
+const { testShifts } = require("./src/tests/key-left-shifts");
+const { knTest } = require("./src/tests/kn-test");
 const { testP1Permutation } = require("./src/tests/permutation-test");
+const { splitKey } = require("./src/tests/splitKey");
 
 function runTests() {
   //permutation test
   let p = testP1Permutation();
   //split the key into two 28-bit halves
-  let { c0, d0 } = testC0D0(p);
+  let { c0, d0 } = splitKey(p);
+
+  for (let i = 0; i < 16; i++) {
+    //shifting
+    const { c, d } = testShifts(c0, d0, i);
+    if (i !== 0) knTest(c, d, i);
+    c0 = c;
+    d0 = d;
+  }
 }
 
 runTests();
