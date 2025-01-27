@@ -2,6 +2,7 @@ const { testShifts } = require("./src/tests/key-left-shifts");
 const { knTest } = require("./src/tests/kn-test");
 const { testP1Permutation } = require("./src/tests/permutation-test");
 const { splitKey } = require("./src/tests/splitKey");
+const { subKeyFuncTest } = require("./src/tests/subkeyFunc-test");
 
 function runTests() {
   //permutation test
@@ -16,6 +17,7 @@ function runTests() {
     c0 = c;
     d0 = d;
   }
+  subKeyFuncTest();
 }
 
 runTests();

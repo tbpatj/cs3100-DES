@@ -25,8 +25,8 @@ const knAns = {
 const knTest = (c, d, round) => {
   //the way they do the permutations means I need to bit shift the key over too 8 bits so it fills the 64 bit placeholding, cause idk who ever thought this was right???
   let key = (c << 28n) | d;
-  key = key << 8n;
-  let actual = permutation(PC2, key, false);
+  //make sure to pass 56 as that is the number of bits we are working with
+  let actual = permutation(PC2, key, 56);
 
   let expected = knAns[`K${round}`];
   try {

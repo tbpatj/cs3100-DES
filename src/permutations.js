@@ -1,7 +1,10 @@
 const { setBitAtIndex, getBitAtIndex } = require("./bit-operations");
 // const { highlightBitsAtIndex } = require("./bit-printing");
 
-function permutation(table, block) {
+//Permutation only work accoording to the https://page.math.tu-berlin.de/~kant/teaching/hess/krypto-ws2006/des.htm
+//if all bits are aligned to the left, so you need to shift the amount of open bits to the left, say you have 56 bits, shift it left 8 bits.
+function permutation(table, block, bits = 64) {
+  block = block << (64n - BigInt(bits));
   let result = BigInt(0);
   for (let i = 0; i < table.length; i++) {
     //we use index, which reads left to right, instead of right to left like how javascript interprets the bits or prints them out
