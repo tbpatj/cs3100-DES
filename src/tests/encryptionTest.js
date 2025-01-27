@@ -1,9 +1,10 @@
 const { getBitChunk, printAllBits } = require("../bit-operations");
+const { encryptChunk } = require("../encryptChunk");
 const { f } = require("../functionF");
 const { getSubKeys } = require("../getSubKeys");
 const { permutation } = require("../permutations");
 const { sBox } = require("../sbox");
-const { IP, Expansion, FinalP } = require("../tables");
+const { IP, Expansion, FinalP, fP } = require("../tables");
 const assert = require("assert");
 
 const ipAns =
@@ -25,6 +26,12 @@ const r1Ans = 0b11101111010010100110010101000100n;
 
 const l16Ans = 0b01000011010000100011001000110100n;
 const r16Ans = 0b00001010010011001101100110010101n;
+
+const r16l16Ans =
+  0b0000101001001100110110011001010101000011010000100011001000110100n;
+
+const finalAns =
+  0b1000010111101000000100110101010000001111000010101011010000000101n;
 
 const encryptionTest = () => {
   let key = BigInt(
@@ -88,7 +95,7 @@ const encryptionTest = () => {
   }
 
   //final permutation
-  const fp = permutation(FinalP, sbox, 32);
+  const fp = permutation(fP, sbox, 32);
 
   try {
     assert.strictEqual(fp, finalPAns, "Values do not match!");
@@ -136,6 +143,32 @@ const encryptionTest = () => {
     console.log("✅ l16 Test passed");
   } catch (error) {
     console.error("❌ l16 Test failed:", error.message);
+  }
+
+  let combined = (r << 32n) | l;
+
+  try {
+    assert.strictEqual(combined, r16l16Ans, "Values do not match!");
+    console.log("✅ combined Test passed");
+  } catch (error) {
+    console.error("❌ combined Test failed:", error.message);
+  }
+
+  const encrypted = permutation(FinalP, combined, 64);
+
+  try {
+    assert.strictEqual(encrypted, finalAns, "Values do not match!");
+    console.log("✅ encrypted Test passed");
+  } catch (error) {
+    console.error("❌ encrypted Test failed:", error.message);
+  }
+
+  const encrypted2 = encryptChunk(m, keys);
+  try {
+    assert.strictEqual(encrypted2, finalAns, "Values do not match!");
+    console.log("✅ encrypted2 Test passed");
+  } catch (error) {
+    console.error("❌ encrypted2 Test failed:", error.message);
   }
 };
 
