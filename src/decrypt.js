@@ -1,12 +1,9 @@
+const { bigIntToHex } = require("./encrypt");
 const { encryptChunk } = require("./encryptChunk");
 const { getSubKeys } = require("./getSubKeys");
 
-function bigIntToHex(number, padding = 16) {
-  return BigInt(number).toString(16).toUpperCase().padStart(padding, "0");
-}
-
-const encrypt = (data, key, isHex = false) => {
-  const keys = getSubKeys(isHex ? BigInt(`0x${key}`) : BigInt(key));
+const decrypt = (data, key, isHex = false) => {
+  const keys = getSubKeys(isHex ? BigInt(`0x${key}`) : BigInt(key)).reverse();
   let m = data;
 
   if (isHex) {
@@ -23,4 +20,4 @@ const encrypt = (data, key, isHex = false) => {
   return res;
 };
 
-module.exports = { encrypt, bigIntToHex };
+module.exports = { decrypt };

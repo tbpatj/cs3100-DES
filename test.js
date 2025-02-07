@@ -1,3 +1,4 @@
+const { decryptionTest } = require("./src/tests/decryptionTest");
 const { encryptionTest } = require("./src/tests/encryptionTest");
 const { testShifts } = require("./src/tests/key-left-shifts");
 const { knTest } = require("./src/tests/kn-test");
@@ -20,6 +21,7 @@ function runTests() {
   }
   subKeyFuncTest();
   encryptionTest();
+  decryptionTest();
 }
 
 runTests();
